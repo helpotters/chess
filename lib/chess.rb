@@ -11,17 +11,26 @@ module ChessBoard
     end
 
     def input(move)
-      move_matrix = %w[K B N R P]
-      begin
-        raise Exception if !move.is_a?(String)
+      raise ArgumentError unless move.is_a?(String)
 
-        move_symbol = move.upcase.strip
+      piece = move.split.select { /[[:alpha]]/ }.join.to_s
+      piece_input(piece)
+    end
+
+    private
+
+    def piece_input(piece)
+      piece_matrix = %w[K B N R P]
+      begin
+        piece_symbol = piece.upcase.strip
         # Knight converts to King if using #split.first
         # Only allow algrebraic notation
-        raise if move_symbol.length > 1 || move_symbol.length < 1
-        move_symbol = move_symbol.split.first.to_s
-        raise "Not chess notation" if move_matrix.none?(move_symbol)
-        { move: move_symbol }
+        raise if piece_symbol.length > 1 || piece_symbol.length < 1
+
+        piece_symbol = piece_symbol.split.first.to_s
+        raise ArgumentError.new("Not chess notation") if piece_matrix.none?(piece_symbol)
+
+        { piece: piece_symbol }
       end
     end
   end
