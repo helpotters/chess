@@ -1,17 +1,18 @@
 # frozen_string_literal: true
 
+include ChessBoard
 
-RSpec.describe ChessBoard do
-  let(:game) { ChessBoard::Chess.new }
+RSpec.describe "#input" do
+  let(:board) { ChessBoard::Chess.new }
   it "has a version number" do
     expect(Chess::VERSION).not_to be nil
   end
 
-  context "#input" do
+  context "notation" do
     context "turn valid input into move:piece hash" do
       it "should only allow valid algebraic notation for pieces" do
-        expect { board.input("Ka2") }.not_to raise_error(ChessBoard::NotationError)
-        expect { board.input("Jh4") }.to raise_error(ChessBoard::NotationError)
+        expect { board.input("Ka2") }.not_to raise_error(NotationError)
+        expect { board.input("Jh4") }.to raise_error(NotationError)
       end
       it "should turn input into hash" do
         expect(board.input("Nb4")).to include({ piece: "N" })
@@ -30,7 +31,7 @@ RSpec.describe ChessBoard do
 
   context "create matrix" do
     it "should have all pieces in the starting locations" do
-      expect(game.board("a2")).to eq("P")
+      expect(board.board("a2")).to eq("P")
     end
     # pending
     # it "should be objects belonging to black and white" do
