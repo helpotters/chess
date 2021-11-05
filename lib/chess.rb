@@ -6,6 +6,9 @@ module ChessBoard
   class Error < StandardError; end
 
   class NotationError < StandardError
+    def message
+     "Incorrect notation"
+    end
   end
 
   # Creates and Operates a Chess Game
@@ -13,8 +16,8 @@ module ChessBoard
     def initialize; end
 
     def input(move)
-      raise ArgumentError unless move.is_a?(String)
-      raise ArgumentError unless move.length ==  3
+      raise NotationError.new unless move.is_a?(String)
+      raise NotationError.new unless move.length ==  3
       # Notation is limited to proper algebraic 3 char inputs
       piece = move.scan(/\p{Upper}/).first.to_s
       column = move.scan(/\p{Lower}/).first.to_s
@@ -23,7 +26,7 @@ module ChessBoard
       begin
         piece_output = piece_input(piece)
         location_output = location_input(column, row)
-      rescue ArgumentError
+      rescue NotationError
         piece_output = piece_input(piece)
         location_output = [nil, nil]
       end
@@ -37,8 +40,8 @@ module ChessBoard
       begin
         # Knight converts to King if using #split.first
         # Only allow algrebraic notation
-        raise ArgumentError.new("No pieces") if piece.empty?
-        raise ArgumentError.new("Not chess notation") unless piece_matrix.include?(piece)
+        raise NotationError.new("No pieces") if piece.empty?
+        raise NotationError.new("Not chess notation") unless piece_matrix.include?(piece)
 
         piece
       end
@@ -47,9 +50,9 @@ module ChessBoard
     def location_input(column, row)
       letter_range = %w[a b c d e f g h] # column
       number_range = (0..8).to_a # row
-      raise ArgumentError unless letter_range.include?(column)
+      raise NotationError.new unless letter_range.include?(column)
 
-      raise ArgumentError unless number_range.include?(row)
+      raise NotationError.new unless number_range.include?(row)
 
       [column, row]
     end

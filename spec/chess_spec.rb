@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+
 RSpec.describe ChessBoard do
   let(:board) { ChessBoard::Chess.new }
   it "has a version number" do
@@ -9,8 +10,8 @@ RSpec.describe ChessBoard do
   context "#input" do
     context "turn valid input into move:piece hash" do
       it "should only allow valid algebraic notation for pieces" do
-        expect { board.input("Ka2") }.not_to raise_error(ArgumentError)
-        expect { board.input("Jh4") }.to raise_error(ArgumentError)
+        expect { board.input("Ka2") }.not_to raise_error(ChessBoard::NotationError)
+        expect { board.input("Jh4") }.to raise_error(ChessBoard::NotationError)
       end
       it "should turn input into hash" do
         expect(board.input("Nb4")).to include({ piece: "N" })
