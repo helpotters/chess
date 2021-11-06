@@ -53,11 +53,11 @@ module Pieces
   class Knight
     def initialize(starting_pos)
       @starting_pos = starting_pos
-      @movement_matrix = [2, 1], [1, 2]
+      @movement_pattern = [2, 1], [1, 2]
     end
 
     def move(place)
-      valid_moves = symmetry_add(@starting_pos, movement_matrix)
+      valid_moves = all_valid_moves(@starting_pos, @movement_pattern)
 
       raise BadMove, place if valid_moves.none?(place)
 
@@ -69,7 +69,18 @@ module Pieces
     end
   end
 
+  # The bishop can move along any of its diagonals
   class Bishop
+    def initialize(starting_pos)
+      @starting_pos = starting_pos
+      @movement_pattern = [1, 1]
+    end
+
+    def move(place)
+      raise BadMove, place if all_valid_moves(@starting_pos, @movement_pattern, true).none?(place)
+
+      place
+    end
   end
 
   class Rook
@@ -82,14 +93,51 @@ module Pieces
   end
 
   def array_add(origin, addition)
+    # a solution to not using matrix addition; sum two arrays together per x and y
     [origin, addition].transpose.map { |x| x.reduce(:+) }
   end
 
-  def symmetry_multiply(base, cartesian_chords = [[1, 1], [-1, 1], [-1, -1], [1, -1]])
-    cartesian_chords.map { |mod| [mod[0] * base[0], mod[1] * base[1]] }
+  # helper function for every direction
+  def symmetry_multiply(directions, rotations = [[1, 1], [-1, 1], [-1, -1], [1, -1]])
+    products = directions.map do |direction|
+      rotations.each.map { |rotation| [rotation[0] * direction[0], rotation[1] * direction[1]] }
+    end
+    products.flatten(1) # each rotation contains a sub-array, must be flat for addition later
   end
 
-  def symmetry_add(base, cartesian_chords = [[1, 1], [-1, 1], [-1, -1], [1, -1]])
-    cartesian_chords.map { |mod| [mod[0] + base[0], mod[1] + base[1]] }
+  # adds
+  def symmetry_add(position, rotations = [[1, 1], [-1, 1], [-1, -1], [1, -1]])
+    array = rotations.each.map do |rotation|
+      moves = [(position[0] + rotation[0]), (position[1] + rotation[1])]
+      next if moves[0] > 8 || moves[0] < 1 # range of chessboard
+      next if moves[1] > 8 || moves[1] < 1
+
+      moves
+    end
+    array.compact
+  end
+
+  # creates an array each valid pos on board
+  # for pieces such rook, queen, and bishop
+  def all_across_board(base_direction)
+    z = []
+    for i in 1..8 # across board in x and y
+      x = base_direction[0] * i
+      y = base_direction[1] * i
+      next if x > 8 || x < 1 # range of chessboard
+      next if y > 8 || y < 1
+
+      z.push([x, y])
+    end
+    z.compact # nil values caused by off-board postitions
+  end
+
+  def all_valid_moves(start, pattern, dir = false)
+    directions = symmetry_multiply(pattern) if dir == false
+    # directional if it is a rook, queen, or bishop
+    directions = symmetry_multiply(all_across_board(pattern)) if dir == true
+
+    # add valid possible moves to center on existing position of piece
+    symmetry_add(start, directions)
   end
 end

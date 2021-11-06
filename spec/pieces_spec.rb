@@ -4,16 +4,6 @@ require_relative "./../lib/pieces"
 include Pieces
 
 RSpec.describe Pieces do
-
-  # helper function for every direction
-  def symmetry_multiply(bases, cartesian_chords = [[1, 1], [-1, 1], [-1, -1], [1, -1]])
-    bases.each { |base| cartesian_chords.map { |mod| [mod[0] * base[0], mod[1] * base[1]] } }
-  end
-
-  def symmetry_add(base, cartesian_chords = [[1, 1], [-1, 1], [-1, -1], [1, -1]])
-    cartesian_chords.map { |mod| [mod[0] + base[0], mod[1] + base[1]] }
-  end
-
   context "Pawn" do
     let(:pawn) { Pawn.new([0, 1]) } # a2
     it "should only travel one square" do
@@ -38,15 +28,30 @@ RSpec.describe Pieces do
     let(:knight) { Knight.new(starting_pos) }
 
     it "should move two blocks plus one block adjacent in any direction" do
-      all_directions = symmetry_multiply([[2, 1], [1, 2]])
-      all_moves = symmetry_add([4, 4], all_directions)
+      moves = all_valid_moves(starting_pos, [[2, 1], [1, 2]])
       valid_positive_move = [6, 5]
-      expect(all_moves).to include(knight.move(valid_positive_move))
-      valid_negative_move = [3, 2]
+      expect(moves).to include(knight.move(valid_positive_move))
+      valid_negative_move = [4, 2]
       expect { knight.move(valid_negative_move) }.to raise_error(BadMove)
     end
   end
-  xcontext "Bishop"
+  context "Bishop" do
+    let(:bishop) { Bishop.new([3, 3]) }
+    it "should move in any diagonal" do
+      moves = all_valid_moves([3, 3], [1, 1], true)
+
+      valid_move = [8, 8]
+      valid_operation = bishop.move(valid_move)
+      expect(valid_operation).to eq(valid_move)
+      expect(moves).to include(valid_operation)
+
+      valid_positive_negative = [4, 2]
+      expect(bishop.move(valid_positive_negative)).to eq(valid_positive_negative)
+    end
+    it "should return error if it is not a valid move" do
+      expect { bishop.move([1, 4]) }.to raise_error(BadMove)
+    end
+  end
   xcontext "Rook"
   xcontext "Queen"
   xcontext "King"
