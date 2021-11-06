@@ -19,7 +19,8 @@ module Pieces
   class Pawn
     attr_reader :position
 
-    def initialize(starting_pos)
+    # BUG: should not have starting default
+    def initialize(starting_pos = [0, 2])
       @position = starting_pos
       @times_moved = 0
       @movement_matrix = nil
@@ -48,10 +49,27 @@ module Pieces
     end
   end
 
-  class Bishop
+  # The Knight can move two blocks plus one adjacent
+  class Knight
+    def initialize(starting_pos)
+      @starting_pos = starting_pos
+      @movement_matrix = [2, 1], [1, 2]
+    end
+
+    def move(place)
+      valid_moves = symmetry_add(@starting_pos, movement_matrix)
+
+      raise BadMove, place if valid_moves.none?(place)
+
+      place
+    end
+
+    def movement_matrix
+      @movement_matrix = symmetry_multiply(@movement_matrix.flatten(1))
+    end
   end
 
-  class Knight
+  class Bishop
   end
 
   class Rook
@@ -65,5 +83,13 @@ module Pieces
 
   def array_add(origin, addition)
     [origin, addition].transpose.map { |x| x.reduce(:+) }
+  end
+
+  def symmetry_multiply(base, cartesian_chords = [[1, 1], [-1, 1], [-1, -1], [1, -1]])
+    cartesian_chords.map { |mod| [mod[0] * base[0], mod[1] * base[1]] }
+  end
+
+  def symmetry_add(base, cartesian_chords = [[1, 1], [-1, 1], [-1, -1], [1, -1]])
+    cartesian_chords.map { |mod| [mod[0] + base[0], mod[1] + base[1]] }
   end
 end
