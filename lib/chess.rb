@@ -16,6 +16,38 @@ module ChessGame
 
   # Initializes and Operates a Chess Game
   class Chess
+  end
+
+  # Manages the Positional Data
+  class Board
+    def initialize
+      @board_matrix = {
+        eight: %w[R N B Q K B N R],
+        seven: %w[P P P P P P P P],
+        six: [nil, nil, nil, nil, nil, nil, nil, nil],
+        five: [nil, nil, nil, nil, nil, nil, nil, nil],
+        four: [nil, nil, nil, nil, nil, nil, nil, nil],
+        three: [nil, nil, nil, nil, nil, nil, nil, nil],
+        two: %w[P P P P P P P P],
+        one: %w[R N B K Q B N R]
+      }
+    end
+  end
+
+  # Controls Pieces and Inputs
+  class Player
+    include Pieces
+    def initialize
+      @pawns = []
+      8.times { @pawns.push(Pawn.new) }
+      @bishops = Bishop.new, Bishop.new
+      @knights = Knight.new, Knight.new
+      @rooks = Rook.new, Rook.new
+      @queen = Queen.new
+      @king = King.new
+      @pieces = [@pawns, @bishops, @knights, @rooks, @queen, @king].flatten
+    end
+
     def input(move)
       raise NotationError unless move.is_a?(String)
       raise NotationError unless move.length == 3
@@ -57,37 +89,6 @@ module ChessGame
       raise NotationError unless number_range.include?(row)
 
       [column, row]
-    end
-  end
-
-  # Manages the Positional Data
-  class Board
-    def initialize
-      @board_matrix = {
-        eight: %w[R N B Q K B N R],
-        seven: %w[P P P P P P P P],
-        six: [nil, nil, nil, nil, nil, nil, nil, nil],
-        five: [nil, nil, nil, nil, nil, nil, nil, nil],
-        four: [nil, nil, nil, nil, nil, nil, nil, nil],
-        three: [nil, nil, nil, nil, nil, nil, nil, nil],
-        two: %w[P P P P P P P P],
-        one: %w[R N B K Q B N R]
-      }
-    end
-  end
-
-  # Controls Pieces and Inputs
-  class Player
-    include Pieces
-    def initialize
-      @pawns = []
-      8.times { @pawns.push(Pawn.new) }
-      @bishops = Bishop.new, Bishop.new
-      @knights = Knight.new, Knight.new
-      @rooks = Rook.new, Rook.new
-      @queen = Queen.new
-      @king = King.new
-      @pieces = [@pawns, @bishops, @knights, @rooks, @queen, @king].flatten
     end
   end
 end
