@@ -76,10 +76,12 @@ module ChessGame
     end
   end
 
+  # Controls Pieces and Inputs
   class Player
     include Pieces
     def initialize
-      @pawns = Pawn.new, Pawn.new, Pawn.new, Pawn.new, Pawn.new, Pawn.new, Pawn.new, Pawn.new
+      @pawns = []
+      8.times { @pawns.push(Pawn.new) }
       @bishops = Bishop.new, Bishop.new
       @knights = Knight.new, Knight.new
       @rooks = Rook.new, Rook.new

@@ -57,7 +57,7 @@ RSpec.describe Player do
     it { is_expected.to include(an_instance_of(Queen)).once }
     it { is_expected.to include(an_instance_of(King)).once }
   end
-  context "allow pieces to be removed or changed as a private function" do
+  xcontext "allow pieces to be removed or changed as a private function" do
     let(:game_engine) { ChessGame::Chess.new }
     it "should remove Pawn Object" do
     end
