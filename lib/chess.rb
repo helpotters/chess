@@ -6,6 +6,7 @@ require_relative "pieces"
 module ChessGame
   class Error < StandardError; end
 
+  # Error Specification for Non-Algebraic Notation
   class NotationError < StandardError
     def message
       "Incorrect notation"
@@ -13,7 +14,7 @@ module ChessGame
   end
 
   # Initializes and Operates a Chess Game
-  class ChessEngine
+  class Game
   end
 
   # Manages the Positional Data
