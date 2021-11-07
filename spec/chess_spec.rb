@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
-include ChessBoard
+include ChessGame
+include Pieces
 
 RSpec.describe "#input" do
-  let(:board) { ChessBoard::Chess.new }
+  let(:board) { ChessGame::Chess.new }
   it "has a version number" do
     expect(Chess::VERSION).not_to be nil
   end
@@ -28,15 +29,40 @@ RSpec.describe "#input" do
       end
     end
   end
+end
 
-  context "create matrix" do
-    it "should have all pieces in the starting locations" do
-      expect(board.board("a2")).to eq("P")
+RSpec.describe "board" do
+  let(:game_obj) { ChessGame::Chess.new }
+  xcontext "board matrix should contain correct arrangement of pieces" do
+    it "should create an 8x8 matrix" do
+      matrix_var = game_obj.instance_variable_get(:board)
+      expect(matrix_var.length).to eq(8)
+      expect(matrix_var[0].length).to eq(8)
     end
-    # pending
-    # it "should be objects belonging to black and white" do
-    # end
-    # it "should interpret alphanumeric chars into row(1..8):column(a..h)" do
-    # end
+    xit "should return the piece at position" do
+      expect(game_obj.pos("d8")).to eq("R")
+    end
   end
+end
+
+RSpec.describe Player do
+  let(:player) { ChessGame::Player.new }
+  context "create pieces" do
+    # NOTE: Could remove dependence on Pieces by using mock responses
+    subject(:player_pieces) { player.instance_variable_get(:@pieces).to_a }
+    it { is_expected.to include(an_instance_of(Pawn)).exactly(8).times }
+    it { is_expected.to include(an_instance_of(Bishop)).twice }
+    it { is_expected.to include(an_instance_of(Knight)).twice }
+    it { is_expected.to include(an_instance_of(Rook)).twice }
+    it { is_expected.to include(an_instance_of(Queen)).once }
+    it { is_expected.to include(an_instance_of(King)).once }
+  end
+  context "allow pieces to be removed or changed as a private function" do
+    let(:game_engine) { ChessGame::Chess.new }
+    it "should remove Pawn Object" do
+    end
+  end
+  xcontext "input interprets string command and compares against @pieces" do
+  end
+  # TODO: change input to player so it can confirm valid pieces to move
 end
