@@ -13,7 +13,7 @@ module ChessGame
   end
 
   # Initializes and Operates a Chess Game
-  class Chess
+  class ChessEngine
   end
 
   # Manages the Positional Data

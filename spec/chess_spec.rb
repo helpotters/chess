@@ -53,5 +53,5 @@ RSpec.describe Board do
   end
 end
 
-RSpec.describe Chess do
+RSpec.describe Game do
 end
