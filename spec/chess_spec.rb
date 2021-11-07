@@ -19,7 +19,7 @@ RSpec.describe Player do
     context "notation" do
       context "turn valid input into move:piece hash" do
         it "should only allow valid algebraic notation for pieces" do
-          expect { player.input("Ka2") }.not_to raise_error(NotationError)
+          expect { player.input("Ka2") }.not_to raise_error
           expect { player.input("Jh4") }.to raise_error(NotationError)
         end
         it "should turn input into hash" do
