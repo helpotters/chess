@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# !/usr/bin/env ruby
-
 require_relative "chess/version"
 require_relative "pieces"
 
