@@ -39,19 +39,25 @@ RSpec.describe Player do
   end
 end
 
+RSpec.describe Game do
+  xcontext "illegal?"
+  xcontext "capture?"
+  xcontext "checkmate?"
+  xcontext "round"
+end
+
 RSpec.describe Board do
-  let(:game_obj) { ChessGame::Chess.new }
-  xcontext "board matrix should contain correct arrangement of pieces" do
+  let(:board_obj) { ChessGame::Game.new.instance_variable_get(:@board) }
+  xcontext "piece matrix instance variable" do
     it "should create an 8x8 matrix" do
-      matrix_var = game_obj.instance_variable_get(:board)
+      matrix_var = board_obj.instance_variable_get(:@board_matrix)
       expect(matrix_var.length).to eq(8)
       expect(matrix_var[0].length).to eq(8)
     end
     xit "should return the piece at position" do
-      expect(game_obj.pos("d8")).to eq("R")
+      expect(board_obj.pos("d8")).to eq("R")
     end
   end
-end
-
-RSpec.describe Game do
+  xcontext "update_board"
+  xcontext "display"
 end

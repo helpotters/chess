@@ -15,6 +15,9 @@ module ChessGame
 
   # Initializes and Operates a Chess Game
   class Game
+    def initialize
+      @board = Board.new
+    end
   end
 
   # Manages the Positional Data
