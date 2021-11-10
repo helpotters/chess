@@ -23,6 +23,7 @@ module Pieces
       @position = starting_pos
       @times_moved = 0
       @movement_matrix = nil
+      @one_rank = [0, 1]
       @two_ranks = [0, 2]
       @capture = [1, 1], [-1, -1]
     end
@@ -42,6 +43,7 @@ module Pieces
     def movement_matrix
       @movement_matrix = []
       @capture.each { |movement| @movement_matrix << movement }
+      @movement_matrix << @one_rank
       @movement_matrix << @two_ranks if @times_moved.zero? # disabled after first move
     end
   end
