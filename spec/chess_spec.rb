@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-include ChessGame
+include ChessGame # Main
 include Pieces
 
 RSpec.describe Player do
@@ -40,10 +40,40 @@ RSpec.describe Player do
 end
 
 RSpec.describe Game do
-  xcontext "illegal?"
-  xcontext "capture?"
-  xcontext "checkmate?"
-  xcontext "round"
+  subject(:game_obj) { Game.new }
+  context "Create both players" do
+    it "should create a player for White" do
+      white = game_obj.instance_variable_get(:@white)
+      expect(white).to be_an_instance_of(Player)
+    end
+    it "should create a player for Black" do
+      black = game_obj.instance_variable_get(:@black)
+      expect(black).to be_an_instance_of(Player)
+    end
+  end
+  context "#play" do
+    context "#place_piece" do
+      before do
+        board = double
+        game_obj.instance_variable_set(:@board, board)
+        allow(board).to receive(:request).and_return("bad input", "Nb1")
+      end
+      it "should receive a notation error with bad input" do
+        allow(ChessGame::Player).to receive(:input).with("Nb1").and_return(NotationError)
+        expect { game_obj.send(:place_piece, Player.new) }.to raise_error(NotationError)
+      end
+      it "should ask again if NotationError" do
+        hash = { piece: "Knight", location: ["a", 1] }
+        allow(ChessGame::Player).to receive(:input).with("Nb1").and_return(hash)
+        expect { game_obj.send(:place_piece, Player.new) }.to raise_error(NotationError)
+        expect { game_obj.send(:place_piece, Player.new) }.to_not raise_error(NotationError)
+      end
+    end
+    xcontext "#illegal?" do
+    end
+    xcontext "#capture?"
+    xcontext "#checkmate?"
+  end
 end
 
 RSpec.describe Board do

@@ -17,6 +17,24 @@ module ChessGame
   class Game
     def initialize
       @board = Board.new
+      @white = Player.new
+      @black = Player.new
+      players = [@white, @black]
+    end
+
+    def play
+      players.each do |player|
+        place_piece(player)
+      rescue NotationError
+        retry
+      end
+    end
+
+    private
+
+    def place_piece(player)
+      request = @board.request(player)
+      player.input(request)
     end
   end
 
