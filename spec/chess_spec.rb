@@ -91,6 +91,7 @@ RSpec.describe Board do
       expect(board_obj.pos("d8")).to eq("R")
     end
   end
-  xcontext "update_board"
-  xcontext "display"
+  xcontext "#ask"
+  xcontext "#display"
+  xcontext "#update"
 end

@@ -24,6 +24,7 @@ module Pieces
       @times_moved = 0
       @movement_matrix = nil
       @two_ranks = [0, 2]
+      @capture = [1, 1], [-1, -1]
     end
 
     def move(place)
@@ -33,13 +34,14 @@ module Pieces
 
       @times_moved += 1 # Two-rank movement disabled after first move
 
-      @position = place
+      place
     end
 
     private
 
     def movement_matrix
       @movement_matrix = []
+      @capture.each { |movement| @movement_matrix << movement }
       @movement_matrix << @two_ranks if @times_moved.zero? # disabled after first move
     end
   end
