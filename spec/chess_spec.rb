@@ -69,10 +69,13 @@ RSpec.describe Game do
         expect { game_obj.send(:place_piece, Player.new) }.to_not raise_error(NotationError)
       end
     end
-    xcontext "#illegal?" do
+    xcontext "#checkmate?" do
+    end
+    xcontext "#legal?" do
+      xit "should keep a King from going into check"
+      xit "should ask the piece if it can move there"
     end
     xcontext "#capture?"
-    xcontext "#checkmate?"
   end
 end
 
