@@ -83,7 +83,16 @@ module Pieces
     end
   end
 
+  # Piece can travel along any horizontal or vertical
   class Rook
+    def initialize(starting_pos)
+      @starting_pos = starting_pos
+      @movement_pattern = [1, 0], [0, 1]
+    end
+
+    def move(place)
+      place
+    end
   end
 
   class Queen
@@ -120,12 +129,13 @@ module Pieces
   # creates an array each valid pos on board
   # for pieces such rook, queen, and bishop
   def all_across_board(base_direction)
+    base_direction = base_direction.flatten(1)
     z = []
-    for i in 1..8 # across board in x and y
+    (1..8).each do |i| # across board in x and y
       x = base_direction[0] * i
       y = base_direction[1] * i
-      next if x > 8 || x < 1 # range of chessboard
-      next if y > 8 || y < 1
+      next if x > 8 || x.negative? # range of chessboard
+      next if y > 8 || y.negative?
 
       z.push([x, y])
     end

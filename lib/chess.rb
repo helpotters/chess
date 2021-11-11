@@ -49,7 +49,7 @@ module ChessGame
         four: [nil, nil, nil, nil, nil, nil, nil, nil],
         three: [nil, nil, nil, nil, nil, nil, nil, nil],
         two: %w[P P P P P P P P],
-        one: %w[R N B K Q B N R]
+        one: %w[R N B K Q B N R],
       }
     end
   end
@@ -57,14 +57,15 @@ module ChessGame
   # Controls Pieces and Inputs
   class Player
     include Pieces
+
     def initialize
       @pawns = []
-      8.times { @pawns.push(Pawn.new) }
-      @bishops = Bishop.new, Bishop.new
-      @knights = Knight.new, Knight.new
-      @rooks = Rook.new, Rook.new
-      @queen = Queen.new
-      @king = King.new
+      8.times { @pawns.push(Pawn.new([0, 1])) }
+      @bishops = Bishop.new([0, 1]), Bishop.new([0, 1])
+      @knights = Knight.new([0, 1]), Knight.new([0, 1])
+      @rooks = Rook.new(), Rook.new()
+      @queen = Queen.new()
+      @king = King.new()
       @pieces = [@pawns, @bishops, @knights, @rooks, @queen, @king].flatten
     end
 
