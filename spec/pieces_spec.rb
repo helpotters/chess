@@ -16,8 +16,9 @@ RSpec.describe Pieces do
       invalid_move = [0, 5] # a6
       expect { pawn.move(invalid_move) }.to raise_error(BadMove)
     end
-    it "should have choice to capture diagonally" do
-      capture = [1, 2]
+    xit "should have choice to capture diagonally" do
+      pawn.instance_variable_set(:@position, [0, 3])
+      capture = [1, 4]
       expect(pawn.move(capture)).to eq(capture)
     end
     # TODO: figure out legality checks

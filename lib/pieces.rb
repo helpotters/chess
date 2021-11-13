@@ -66,6 +66,8 @@ module Pieces
 
       piece[:pattern] = [[0, 1], [0, 2]] if @attributes[:turns] == 0
       piece[:pattern] = [[0, 1]] if @attributes[:turns] == 1
+
+      piece[:pattern] = [[0, 1], [-1, 1], [1, 1]] if @position[1] == 3
     end
 
     def start_position
