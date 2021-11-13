@@ -25,11 +25,11 @@ RSpec.describe Pieces do
     xit "have choice for en passasnt in first move"
   end
   context "Knight" do
-    starting_pos = [4, 4]
     let(:knight) { Piece.new("knight") }
     let(:valid_moves) { ValidMoves.new(knight) }
 
     it "should move two blocks plus one block adjacent in any direction" do
+      knight.instance_variable_set(:@position, [4, 4])
       moves = valid_moves.confirm([[2, 1], [1, 2]])
       valid_positive_move = [6, 5]
       expect(moves).to include(knight.move(valid_positive_move))

@@ -106,7 +106,7 @@ module Pieces
     def rotational_modify(move)
       board_moves = @sweeping ? all_across_board(move) : move
       pattern_reflections = board_moves.each { |move| reflect_pattern(move) }
-      pattern_reflections.each { |pattern| modify_from_position(@position, pattern) }
+      modify_from_position(@position, pattern_reflections)
     end
 
     def linear_modify(moves)
