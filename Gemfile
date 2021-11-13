@@ -19,3 +19,5 @@ gem "ruby-debug-ide", "~> 0.7.3"
 
 
 gem "pry-nav", "~> 1.0"
+
+gem "byebug", "~> 11.1"

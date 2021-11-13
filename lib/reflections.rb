@@ -15,8 +15,7 @@ module ChessAssistMethods
   # Returns an array of valid moves from current row, column
   def modify_from_position(directions, rotations = [[1, 1], [-1, 1], [-1, -1], [1, -1]])
     rotations.each.map do |rotation|
-      moves = [(directions[0] + rotation[0]), (directions[1] + rotation[1])]
-      p moves
+      moves = [(rotation[0] + directions[0]).to_i, (rotation[1] + directions[1]).to_i]
       next if moves[0] > 7 || moves[0] < 0 # range of chessboard
       next if moves[1] > 7 || moves[1] < 0
 
@@ -31,8 +30,8 @@ module ChessAssistMethods
     (1..8).each do |i| # across board in x and y
       x = base_direction[0] * i
       y = base_direction[1] * i
-      next if x > 8  || x.negative? # range of chessboard
-      next if y > 8  || y.negative?
+      next if x > 8 || x.negative? # range of chessboard
+      next if y > 8 || y.negative?
 
       z.push([x, y])
     end
