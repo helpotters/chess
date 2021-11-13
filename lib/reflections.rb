@@ -6,10 +6,9 @@ module ChessAssistMethods
   def reflect_pattern(directions, rotations = [[1, 1], [-1, 1], [-1, -1], [1, -1]])
     # multiply
     products = directions.map do |direction|
-      rotations.each.map { |rotation| [rotation[0] * direction[0], rotation[1] * direction[1]] }
+      rotations.each.map { |rotation| [(rotation[0] * direction[0]).to_i, (rotation[1] * direction[1]).to_i] }
     end
     products.compact
-    reflect_from_position(products)
   end
 
   # Returns an array of valid moves from current row, column
