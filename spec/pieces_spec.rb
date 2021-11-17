@@ -38,7 +38,8 @@ RSpec.describe Pieces do
   context "Bishop" do
     let(:bishop) { Bishop.new([3, 3]) }
     it "should move in any diagonal" do
-      moves = all_valid_moves([3, 3], [1, 1], true)
+      pattern = bishop.instance_variable_get(:@movement_pattern)
+      moves = all_valid_moves([3, 3], pattern, true)
 
       valid_move = [8, 8]
       valid_operation = bishop.move(valid_move)
@@ -55,18 +56,18 @@ RSpec.describe Pieces do
   context "Rook" do
     let(:starting_pos) { [3, 3] }
     let(:rook) { Rook.new(starting_pos) }
-    it "should move in any diagonal" do
+    it "should move in any horizontal or vertical" do
       pattern = rook.instance_variable_get(:@movement_pattern)
       directionality = true
       moves = all_valid_moves(starting_pos, pattern, directionality)
 
-      valid_move = [8, 3]
-      valid_operation = rook.move(valid_move)
-      expect(valid_operation).to eq(valid_move)
+      valid_horizontal_move = [8, 3]
+      valid_operation = rook.move(valid_horizontal_move)
+      expect(valid_operation).to eq(valid_horizontal_move)
       expect(moves).to include(valid_operation)
 
-      valid_positive_negative = [3, 8]
-      expect(rook.move(valid_positive_negative)).to eq(valid_positive_negative)
+      valid_vertical_move = [3, 8]
+      expect(rook.move(valid_vertical_move)).to eq(valid_vertical_move)
     end
     it "should return error if it is not a valid move" do
       expect { rook.move([1, 4]) }.to raise_error(BadMove)

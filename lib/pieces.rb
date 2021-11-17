@@ -1,6 +1,7 @@
 # lib/pieces.rb
 
 require "matrix"
+require "pry-nav"
 
 module Pieces
   class BadMove < ArgumentError
@@ -87,10 +88,12 @@ module Pieces
   class Rook
     def initialize(starting_pos)
       @starting_pos = starting_pos
-      @movement_pattern = [1, 0], [0, 1]
+      @movement_pattern = [all_across_board([1, 0]), all_across_board([0, 1])].flatten(2)
     end
 
     def move(place)
+      raise BadMove, place if all_valid_moves(@starting_pos, @movement_pattern, true).none?(place)
+
       place
     end
   end
@@ -106,6 +109,7 @@ module Pieces
     [origin, addition].transpose.map { |x| x.reduce(:+) }
   end
 
+  # TODO: refactor functions to allow ease of multiple values
   # helper function for every direction
   def symmetry_multiply(directions, rotations = [[1, 1], [-1, 1], [-1, -1], [1, -1]])
     products = directions.map do |direction|
@@ -129,23 +133,28 @@ module Pieces
   # creates an array each valid pos on board
   # for pieces such rook, queen, and bishop
   def all_across_board(base_direction)
-    base_direction = base_direction.flatten(1)
     z = []
     (1..8).each do |i| # across board in x and y
       x = base_direction[0] * i
       y = base_direction[1] * i
-      next if x > 8 || x.negative? # range of chessboard
-      next if y > 8 || y.negative?
+      next if x > 8  || x.negative? # range of chessboard
+      next if y > 8  || y.negative?
 
       z.push([x, y])
     end
     z.compact # nil values caused by off-board postitions
   end
 
-  def all_valid_moves(start, pattern, dir = false)
-    directions = symmetry_multiply(pattern) if dir == false
+  def all_valid_moves(start, patterns, dir = false)
     # directional if it is a rook, queen, or bishop
-    directions = symmetry_multiply(all_across_board(pattern)) if dir == true
+    if dir == true && patterns.length > 2
+      directions = patterns.each.map { |pattern| all_across_board(pattern) }
+      directions = directions.flatten(1)
+    elsif dir == true
+      directions = symmetry_multiply(all_across_board(patterns))
+    elsif dir == false
+      directions = symmetry_multiply(patterns)
+    end
 
     # add valid possible moves to center on existing position of piece
     symmetry_add(start, directions)
