@@ -1,9 +1,11 @@
 # lib/pieces.rb
+# frozen_string_literal: true
 
 require "matrix"
-require "pry-nav"
 
+# Contains the Object and Rules for the Operations of Chess Pieces
 module Pieces
+  # An error class used for move validation, which returns the bad move
   class BadMove < ArgumentError
     attr_reader :move
 
