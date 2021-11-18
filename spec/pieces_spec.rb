@@ -5,7 +5,7 @@ include Pieces
 
 RSpec.describe Pieces do
   context "Pawn" do
-    let(:pawn) { Pawn.new([0, 1]) } # a2
+    let(:pawn) { Piece.new("pawn") } # a2
     it "should only travel one square" do
       valid_move = [0, 2] # a3
       expect(pawn.move(valid_move)).to eq(valid_move)
@@ -25,7 +25,7 @@ RSpec.describe Pieces do
   end
   context "Knight" do
     starting_pos = [4, 4]
-    let(:knight) { Knight.new(starting_pos) }
+    let(:knight) { Piece.new("knight") }
 
     it "should move two blocks plus one block adjacent in any direction" do
       moves = all_valid_moves(starting_pos, [[2, 1], [1, 2]])
@@ -36,7 +36,7 @@ RSpec.describe Pieces do
     end
   end
   context "Bishop" do
-    let(:bishop) { Bishop.new([3, 3]) }
+    let(:bishop) { Piece.new("knight") }
     it "should move in any diagonal" do
       pattern = bishop.instance_variable_get(:@movement_pattern)
       moves = all_valid_moves([3, 3], pattern, true)
@@ -55,7 +55,7 @@ RSpec.describe Pieces do
   end
   context "Rook" do
     let(:starting_pos) { [3, 3] }
-    let(:rook) { Rook.new(starting_pos) }
+    let(:rook) { Piece.new("rook") }
     it "should move in any horizontal or vertical" do
       pattern = rook.instance_variable_get(:@movement_pattern)
       directionality = true
