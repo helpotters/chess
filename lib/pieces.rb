@@ -69,15 +69,14 @@ module Pieces
     end
 
     def start_position
+      # The starting positions reflect across the board
       start_pos = PIECE_START_MODIFIER[@piece[:id]]
+      row = start_pos[:start][1] + (@count * start_pos[:mod])
       if @side == "black"
-        x = start_pos[:start][0] + 8
-        y = start_pos[:start][1] + (@count * start_pos[:mod])
-        # flipping x and y diagonally across the board
-        [y, x]
+        # flipping column and row diagonally across the board
+        [row, start_pos[:start][0] + 8]
       else
-        y = start_pos[:start][1] + (@count * start_pos[:mod])
-        [start_pos[:start][0], y]
+        [start_pos[:start][0], row]
       end
     end
   end
