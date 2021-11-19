@@ -58,7 +58,7 @@ module ChessGame
   class Player
     include Pieces
 
-    def initialize(side)
+    def initialize(side = "white")
       @pawns = []
       8.times { @pawns.push(Piece.new("pawn", side)) }
       @bishops = Piece.new("bishop", side), Piece.new("bishop", side)
@@ -67,6 +67,7 @@ module ChessGame
       @queen = Piece.new("queen", side)
       @king = Piece.new("king", side)
       @pieces = [@pawns, @bishops, @knights, @rooks, @queen, @king].flatten
+      p @pieces
     end
 
     def input(move)

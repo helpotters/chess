@@ -42,8 +42,8 @@ module Pieces
     @@existing_pieces = []
 
     def initialize(piece, side = "white")
-      @piece = PIECES[piece]
-      @attributes = { turns: 0, id: @piece[:id], side: side }
+      @piece = PIECES[piece].to_h
+      @attributes = { turns: 0, id: @piece.key(:id), side: side }
       @@existing_pieces << self
 
       @count = 0
