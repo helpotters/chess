@@ -60,7 +60,7 @@ module ChessGame
 
     def initialize
       @pawns = []
-      8.times { @pawns.push(Pawn.new([0, 1])) }
+      8.times { @pawns.push(Pawn.new) }
       @bishops = Bishop.new([0, 1]), Bishop.new([0, 1])
       @knights = Knight.new([0, 1]), Knight.new([0, 1])
       @rooks = Rook.new([1, 0]), Rook.new([6, 0])

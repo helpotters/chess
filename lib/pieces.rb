@@ -2,6 +2,8 @@
 # frozen_string_literal: true
 
 require "matrix"
+require "pry-nav"
+require "reflections"
 
 # Contains the Object and Rules for the Operations of Chess Pieces
 module Pieces
@@ -19,103 +21,93 @@ module Pieces
     end
   end
 
-  def array_add(origin, addition)
-    # a solution to not using matrix addition; sum two arrays together per x and y
-    [origin, addition].transpose.map { |x| x.reduce(:+) }
-  end
-
   # Creates any chess piece based off argument
   class Piece
-    def initialize(piece, side, order)
-      @piece = @pieces.key(piece)
-      @movement_pattern = @pieces.key(piece)
-      @pieces = {
-        pawn: [[0, 1]],
-        knight: [[2, 1], [1, 2]],
-        bishop: [[1, 1]],
-        rook: [[0, 1], [1, 0]]
-      }
-      @valid_moves = ValidMoves.new(@piece, @movement_pattern)
-      @position = start_position(side, order)
+    attr_reader :piece, :position
+
+    PIECE_START_MODIFIER = {
+      "pawn" => { start: [0, 1], mod: 1 },
+      "rook" => { start: [0, 0], mod: 7 },
+      "knight" => { start: [0, 1], mod: 5 },
+      "bishop" => { start: [0, 2], mod: 3 }
+    }.freeze
+    PIECES = {
+      "pawn" => { id: "pawn", pattern: [[0, 1]], directional: false, sweeping: false },
+      "knight" => { id: "knight", pattern: [[2, 1], [1, 2]], directional: true, sweeping: false },
+      "bishop" => { id: "pawn", pattern: [[1, 1]], directional: true, sweeping: true },
+      "rook" => { id: "rook", pattern: [[0, 1], [1, 0]], directional: true, sweeping: true },
+      "queen" => { id: "pawn", pattern: [[0, 1]], directional: false, sweeping: false }
+    }.freeze
+
+    @@existing_pieces = []
+
+    def initialize(piece, side = "white")
+      @piece = PIECES[piece]
+      @attributes = { turns: 0, id: @piece[:id], side: side }
+      @@existing_pieces << self
+
+      @count = 0
+      @position = start_position
+      @@existing_pieces.each { |piece| @count += 1 if piece.piece[:id] == @piece[:id] }
     end
 
-    def move(position)
-      raise if @valid_moves.update(position).include?(position)
+    def move(new_position)
+      check_piece_conditionals
+      valid_moves = ValidMoves.new(self)
+      raise BadMove, new_position if valid_moves.confirm(new_position).none?(new_position)
 
-      position
+      new_position
     end
 
-    def start_position(side, _order)
-      case side
-      when "white"
-        modifier = [0, 0]
-      when black
-        modifier = [0, 8]
+    # Checks for any limitations or conditional modifiers a piece's movement pattern
+    def check_piece_conditionals
+      return unless @attributes[:id] == "pawn"
+      return unless @attributes[:turns] < 2
+
+      piece[:pattern] = [[0, 1]] if @turns == 1
+      piece[:pattern] = [[0, 1], [0, 2]] if @turns == 0
+    end
+
+    def start_position
+      start_pos = PIECE_START_MODIFIER[@piece[:id]]
+      if @side == "black"
+        x = start_pos[:start][0] + 8
+        y = start_pos[:start][1] + (@count * start_pos[:mod])
+        # flipping x and y diagonally across the board
+        [y, x]
+      else
+        y = start_pos[:start][1] + (@count * start_pos[:mod])
+        [start_pos[:start][0], y]
       end
-
-      @movement_pattern.first * modifier
     end
   end
 
   # Checker Object for Valid Moves
   class ValidMoves
-    def initialize(piece, pattern)
-      @piece = piece
-      @pattern = pattern
-      @directional = false
+    include ChessAssistMethods
+    def initialize(piece)
+      @piece = piece.piece
+      @position = piece.position
+      @pattern = @piece.fetch(:pattern)
+      @directional = @piece.fetch(:directional)
+      @sweeping = @piece.fetch(:sweeping)
     end
 
-    # def update(move); end
+    def confirm(move)
+      moveset = @directional ? rotational_modify(move) : linear_modify(move)
+      moveset.compact
+    end
 
-    # # TODO: refactor functions to allow ease of multiple values
-    # # helper function for every direction
-    # def symmetry_multiply(directions, rotations = [[1, 1], [-1, 1], [-1, -1], [1, -1]])
-    #   products = directions.map do |direction|
-    #     rotations.each.map { |rotation| [rotation[0] * direction[0], rotation[1] * direction[1]] }
-    #   end
-    #   products.flatten(1) # each rotation contains a sub-array, must be flat for addition later
-    # end
+    private
 
-    # # adds
-    # def symmetry_add(position, rotations = [[1, 1], [-1, 1], [-1, -1], [1, -1]])
-    #   array = rotations.each.map do |rotation|
-    #     moves = [(position[0] + rotation[0]), (position[1] + rotation[1])]
-    #     next if moves[0] > 8 || moves[0] < 1 # range of chessboard
-    #     next if moves[1] > 8 || moves[1] < 1
+    def rotational_modify(move)
+      board_moves = @sweeping ? all_across_board(move) : move
+      pattern_reflections = reflect_pattern(board_moves)
+      modify_from_position(@position, pattern_reflections)
+    end
 
-    #     moves
-    #   end
-    #   array.compact
-    # end
-
-    # # creates an array each valid pos on board
-    # # for pieces such rook, queen, and bishop
-    # def all_across_board(base_direction)
-    #   z = []
-    #   (1..8).each do |i| # across board in x and y
-    #     x = base_direction[0] * i
-    #     y = base_direction[1] * i
-    #     next if x > 8  || x.negative? # range of chessboard
-    #     next if y > 8  || y.negative?
-
-    #     z.push([x, y])
-    #   end
-    #   z.compact # nil values caused by off-board postitions
-    # end
-
-    # def all_valid_moves(start, patterns, dir = false)
-    #   # directional if it is a rook, queen, or bishop
-    #   if dir == true && patterns.length > 2
-    #     directions = patterns.each.map { |pattern| all_across_board(pattern) }
-    #     directions = directions.flatten(1)
-    #   elsif dir == true
-    #     directions = symmetry_multiply(all_across_board(patterns))
-    #   elsif dir == false
-    #     directions = symmetry_multiply(patterns)
-    #   end
-
-    #   # add valid possible moves to center on existing position of piece
-    #   symmetry_add(start, directions)
-    # end
+    def linear_modify(move)
+      modify_from_position(@position, move)
+    end
   end
 end

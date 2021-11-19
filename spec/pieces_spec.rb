@@ -26,9 +26,10 @@ RSpec.describe Pieces do
   context "Knight" do
     starting_pos = [4, 4]
     let(:knight) { Piece.new("knight") }
+    let(:valid_moves) { ValidMoves.new(knight) }
 
     it "should move two blocks plus one block adjacent in any direction" do
-      moves = all_valid_moves(starting_pos, [[2, 1], [1, 2]])
+      moves = valid_moves.confirm([[2, 1], [1, 2]])
       valid_positive_move = [6, 5]
       expect(moves).to include(knight.move(valid_positive_move))
       valid_negative_move = [4, 2]
@@ -36,7 +37,7 @@ RSpec.describe Pieces do
     end
   end
   context "Bishop" do
-    let(:bishop) { Piece.new("knight") }
+    let(:bishop) { Piece.new("bishop") }
     it "should move in any diagonal" do
       pattern = bishop.instance_variable_get(:@movement_pattern)
       moves = all_valid_moves([3, 3], pattern, true)
