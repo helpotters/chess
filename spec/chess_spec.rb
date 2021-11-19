@@ -7,12 +7,12 @@ RSpec.describe Player do
   let(:player) { ChessGame::Player.new }
   context "create pieces" do
     subject(:player_pieces) { player.instance_variable_get(:@pieces).to_a }
-    it { is_expected.to include(an_instance_of(Pawn)).exactly(8).times }
-    it { is_expected.to include(an_instance_of(Bishop)).twice }
-    it { is_expected.to include(an_instance_of(Knight)).twice }
-    it { is_expected.to include(an_instance_of(Rook)).twice }
-    it { is_expected.to include(an_instance_of(Queen)).once }
-    it { is_expected.to include(an_instance_of(King)).once }
+    it { is_expected.to include(an_instance_of(Piece)).exactly(8).times }
+    it { is_expected.to include(an_instance_of(Piece)).twice }
+    it { is_expected.to include(an_instance_of(Piece)).twice }
+    it { is_expected.to include(an_instance_of(Piece)).twice }
+    it { is_expected.to include(an_instance_of(Piece)).once }
+    it { is_expected.to include(an_instance_of(Piece)).once }
   end
   context "input interprets string command and compares against @pieces" do
     let(:player) { ChessGame::Player.new }

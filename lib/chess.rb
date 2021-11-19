@@ -58,14 +58,14 @@ module ChessGame
   class Player
     include Pieces
 
-    def initialize
+    def initialize(side)
       @pawns = []
-      8.times { @pawns.push(Pawn.new) }
-      @bishops = Bishop.new([0, 1]), Bishop.new([0, 1])
-      @knights = Knight.new([0, 1]), Knight.new([0, 1])
-      @rooks = Rook.new([1, 0]), Rook.new([6, 0])
-      @queen = Queen.new
-      @king = King.new
+      8.times { @pawns.push(Piece.new("pawn", side)) }
+      @bishops = Piece.new("bishop", side), Piece.new("bishop", side)
+      @knights = Piece.new("knight", side), Piece.new("knight", side)
+      @rooks = Piece.new("rook", side), Piece.new("rook", side)
+      @queen = Piece.new("queen", side)
+      @king = Piece.new("king", side)
       @pieces = [@pawns, @bishops, @knights, @rooks, @queen, @king].flatten
     end
 
