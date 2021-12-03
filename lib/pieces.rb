@@ -32,21 +32,23 @@ module Pieces
       "bishop" => { start: [0, 2], mod: 3 },
     }.freeze
     PIECES = {
-      "pawn" => { id: "pawn", pattern: [[0, 1]], directional: false, sweeping: false },
-      "knight" => { id: "knight", pattern: [[2, 1], [1, 2]], directional: true, sweeping: false },
-      "bishop" => { id: "bishop", pattern: [[1, 1]], directional: true, sweeping: true },
-      "rook" => { id: "rook", pattern: [[0, 1], [1, 0]], directional: true, sweeping: true },
-      "queen" => { id: "pawn", pattern: [[0, 1]], directional: false, sweeping: false },
+      "pawn" => { id: "pawn", pattern: [[0, 1]], directional: false, sweeping: false, start_place: [0, 1], mod: 1 },
+      "knight" => { id: "knight", pattern: [[2, 1], [1, 2]], directional: true, sweeping: false, start_place: [2, 0], mod: 3 },
+      "bishop" => { id: "bishop", pattern: [[1, 1]], directional: true, sweeping: true, start_place: [1, 0], mod: 6 },
+      "rook" => { id: "rook", pattern: [[0, 1], [1, 0]], directional: true, sweeping: true, start_place: [0, 0], mod: 7 },
+      # incorrect [WIP]
+      "queen" => { id: "queen", pattern: [[0, 1]], directional: false, sweeping: false, start_place: [3, 0], mod: 1 },
+      "king" => { id: "king", pattern: [[0, 1]], directional: false, sweeping: false, start_place: [3, 0], mod: 1 },
     }.freeze
 
     @@existing_pieces = []
 
     def initialize(piece, side = "white")
       @piece = PIECES[piece].to_h
-      @attributes = { turns: 0, id: @piece[:id], side: side }
+      @attributes = { turns: 0, id: @piece[:id], side: side, start_place: @piece[:start_place], mod: @piece[:mod] }
       @@existing_pieces << self
 
-      @count = 0
+      @count = 1
       @position = start_position
       @@existing_pieces.each { |piece| @count += 1 if piece.piece[:id] == @piece[:id] }
     end
@@ -72,13 +74,13 @@ module Pieces
 
     def start_position
       # The starting positions reflect across the board
-      start_pos = PIECE_START_MODIFIER[@piece[:id]]
-      row = start_pos[:start][1] + (@count * start_pos[:mod])
-      if @side == "black"
+      row_value = @attributes[:start_place][0]
+      row = row_value.to_i + (@count * @attributes[:mod])
+      if @attributes[:side] == "black"
         # flipping column and row diagonally across the board
-        [row, start_pos[:start][0] + 8]
+        [row, @attributes[:start_plare][1] + 8]
       else
-        [start_pos[:start][0], row]
+        [@attributes[:start_place][1], row]
       end
     end
   end

@@ -49,7 +49,7 @@ module ChessGame
         four: [nil, nil, nil, nil, nil, nil, nil, nil],
         three: [nil, nil, nil, nil, nil, nil, nil, nil],
         two: %w[P P P P P P P P],
-        one: %w[R N B K Q B N R]
+        one: %w[R N B K Q B N R],
       }
     end
   end
