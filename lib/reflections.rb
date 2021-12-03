@@ -5,7 +5,7 @@ module ChessAssistMethods
   # Creates a general pattern of moves be
   def reflect_pattern(directions, rotations = [[1, 1], [-1, 1], [-1, -1], [1, -1]])
     # multiply
-    products = directions.map do |direction|
+    products = directions.each.map do |direction|
       rotations.each.map { |rotation| [(rotation[0] * direction[0]).to_i, (rotation[1] * direction[1]).to_i] }
     end
     products.compact

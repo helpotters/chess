@@ -41,15 +41,16 @@ RSpec.describe Pieces do
     let(:bishop) { Piece.new("bishop") }
     let(:valid_moves) { ValidMoves.new(bishop) }
     it "should move in any diagonal" do
+      bishop.instance_variable_set(:@position, [0, 1])
       moves = valid_moves.confirm
 
-      valid_move = [8, 8]
+      valid_move = [6, 7]
       valid_operation = bishop.move(valid_move)
       expect(valid_operation).to eq(valid_move)
-      expect(moves).to include(valid_operation)
 
-      valid_positive_negative = [4, 2]
-      expect(bishop.move(valid_positive_negative)).to eq(valid_positive_negative)
+      valid_move = [1, 0]
+      valid_operation = bishop.move(valid_move)
+      expect(moves).to include(valid_operation)
     end
     it "should return error if it is not a valid move" do
       expect { bishop.move([1, 4]) }.to raise_error(BadMove)

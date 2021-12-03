@@ -34,7 +34,7 @@ module Pieces
     PIECES = {
       "pawn" => { id: "pawn", pattern: [[0, 1]], directional: false, sweeping: false },
       "knight" => { id: "knight", pattern: [[2, 1], [1, 2]], directional: true, sweeping: false },
-      "bishop" => { id: "pawn", pattern: [[1, 1]], directional: true, sweeping: true },
+      "bishop" => { id: "bishop", pattern: [[1, 1]], directional: true, sweeping: true },
       "rook" => { id: "rook", pattern: [[0, 1], [1, 0]], directional: true, sweeping: true },
       "queen" => { id: "pawn", pattern: [[0, 1]], directional: false, sweeping: false },
     }.freeze
@@ -105,8 +105,8 @@ module Pieces
 
     def rotational_modify(move)
       board_moves = @sweeping ? all_across_board(move) : move
-      pattern_reflections = board_moves.each { |move| reflect_pattern(move) }
-      modify_from_position(@position, pattern_reflections)
+      pattern_reflections = reflect_pattern(board_moves)
+      modify_from_position(@position, pattern_reflections.flatten(1))
     end
 
     def linear_modify(moves)
