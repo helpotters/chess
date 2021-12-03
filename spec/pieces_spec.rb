@@ -59,17 +59,17 @@ RSpec.describe Pieces do
   context "Rook" do
     let(:starting_pos) { [3, 3] }
     let(:rook) { Piece.new("rook") }
+    let(:valid_moves) { ValidMoves.new(rook) }
     it "should move in any horizontal or vertical" do
-      pattern = rook.instance_variable_get(:@movement_pattern)
-      directionality = true
-      moves = all_valid_moves(starting_pos, pattern, directionality)
+      rook.instance_variable_set(:@position, starting_pos)
+      moves = valid_moves.confirm
 
-      valid_horizontal_move = [8, 3]
+      valid_horizontal_move = [7, 3]
       valid_operation = rook.move(valid_horizontal_move)
       expect(valid_operation).to eq(valid_horizontal_move)
       expect(moves).to include(valid_operation)
 
-      valid_vertical_move = [3, 8]
+      valid_vertical_move = [3, 7]
       expect(rook.move(valid_vertical_move)).to eq(valid_vertical_move)
     end
     it "should return error if it is not a valid move" do
