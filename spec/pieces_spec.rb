@@ -39,9 +39,9 @@ RSpec.describe Pieces do
   end
   context "Bishop" do
     let(:bishop) { Piece.new("bishop") }
+    let(:valid_moves) { ValidMoves.new(bishop) }
     it "should move in any diagonal" do
-      pattern = bishop.instance_variable_get(:@movement_pattern)
-      moves = all_valid_moves([3, 3], pattern, true)
+      moves = valid_moves.confirm
 
       valid_move = [8, 8]
       valid_operation = bishop.move(valid_move)
