@@ -27,12 +27,14 @@ module ChessAssistMethods
   def all_across_board(base_direction)
     z = []
     (1..8).each do |i| # across board in x and y
-      x = base_direction[0] * i
-      y = base_direction[1] * i
-      next if x > 8 || x.negative? # range of chessboard
-      next if y > 8 || y.negative?
+      base_direction.each do |direction|
+        x = direction[0] * i
+        y = direction[1] * i
+        next if x > 8 || x.negative? # range of chessboard
+        next if y > 8 || y.negative?
 
-      z.push([x, y])
+        z.push([x, y])
+      end
     end
     z.compact # nil values caused by off-board postitions
   end
