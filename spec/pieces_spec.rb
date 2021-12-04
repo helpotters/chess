@@ -6,6 +6,9 @@ include Pieces
 RSpec.describe Pieces do
   context "Pawn" do
     let(:pawn) { Piece.new("pawn") } # a2
+    before do
+      pawn.instance_variable_set(:@position, [0, 1])
+    end
     it "should only travel one square" do
       valid_move = [0, 2] # a3
       expect(pawn.move(valid_move)).to eq(valid_move)
