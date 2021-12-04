@@ -79,8 +79,16 @@ RSpec.describe Board do
       expect(matrix_var.length).to eq(8)
       expect(matrix_var[0].length).to eq(8)
     end
-    xit "should return the piece at position" do
-      expect(board_obj.pos("d8")).to eq("R")
+  end
+  xcontext "#initialize" do
+    # the board initializes piece positions
+    xit "should receive pieces and side messages" do
+    end
+    xcontext "should assign each a position on the board" do
+      xit "should assign piece in unoccupied space"
+      xit "should not assign piece in occupied space"
+      xit "should assign piece in according to letter in matrix"
+      xit "all pieces should be assigned a position"
     end
   end
   xcontext "#ask"
