@@ -23,7 +23,8 @@ module Pieces
 
   # Creates any chess piece based off argument
   class Piece
-    attr_reader :piece, :position
+    attr_reader :piece
+    attr_accessor :position
 
     PIECE_START_MODIFIER = {
       "pawn" => { start: [0, 1], mod: 1 },
@@ -49,7 +50,7 @@ module Pieces
       @@existing_pieces << self
 
       @count = 1
-      @position = start_position
+      @position = [0, 0]
       @@existing_pieces.each { |piece| @count += 1 if piece.piece[:id] == @piece[:id] }
     end
 
@@ -70,18 +71,6 @@ module Pieces
       piece[:pattern] = [[0, 1]] if @attributes[:turns] == 1
 
       piece[:pattern] = [[0, 1], [-1, 1], [1, 1]] if @position[1] == 3
-    end
-
-    def start_position
-      # The starting positions reflect across the board
-      row_value = @attributes[:start_place][0]
-      row = row_value.to_i + (@count * @attributes[:mod])
-      if @attributes[:side] == "black"
-        # flipping column and row diagonally across the board
-        [row, @attributes[:start_plare][1] + 8]
-      else
-        [@attributes[:start_place][1], row]
-      end
     end
   end
 
