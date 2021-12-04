@@ -67,7 +67,6 @@ module ChessGame
       @queen = Piece.new("queen", side)
       @king = Piece.new("king", side)
       @pieces = [@pawns, @bishops, @knights, @rooks, @queen, @king].flatten
-      p @pieces
     end
 
     def input(move)

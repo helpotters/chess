@@ -35,11 +35,11 @@ module Pieces
     PIECES = {
       "pawn" => { id: "pawn", pattern: [[0, 1]], directional: false, sweeping: false, start_place: [0, 1], mod: 1 },
       "knight" => { id: "knight", pattern: [[2, 1], [1, 2]], directional: true, sweeping: false, start_place: [2, 0], mod: 3 },
-      "bishop" => { id: "bishop", pattern: [[1, 1]], directional: true, sweeping: true, start_place: [1, 0], mod: 6 },
-      "rook" => { id: "rook", pattern: [[0, 1], [1, 0]], directional: true, sweeping: true, start_place: [0, 0], mod: 7 },
+      "bishop" => { id: "bishop", pattern: [[1, 1]], directional: true, sweeping: true },
+      "rook" => { id: "rook", pattern: [[0, 1], [1, 0]], directional: true, sweeping: true },
       # incorrect [WIP]
-      "queen" => { id: "queen", pattern: [[0, 1]], directional: false, sweeping: false, start_place: [3, 0], mod: 1 },
-      "king" => { id: "king", pattern: [[0, 1]], directional: false, sweeping: false, start_place: [3, 0], mod: 1 },
+      "queen" => { id: "queen", pattern: [[0, 1]], directional: false, sweeping: false },
+      "king" => { id: "king", pattern: [[0, 1]], directional: false, sweeping: false },
     }.freeze
 
     @@existing_pieces = []
