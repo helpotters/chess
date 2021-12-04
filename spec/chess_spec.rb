@@ -73,7 +73,7 @@ end
 
 RSpec.describe Board do
   let(:board_obj) { ChessGame::Game.new.instance_variable_get(:@board) }
-  xcontext "piece matrix instance variable" do
+  context "piece matrix instance variable" do
     it "should create an 8x8 matrix" do
       matrix_var = board_obj.instance_variable_get(:@board_matrix)
       expect(matrix_var.length).to eq(8)

@@ -41,16 +41,16 @@ module ChessGame
   # Manages the Positional Data
   class Board
     def initialize
-      @board_matrix = {
-        eight: %w[R N B Q K B N R],
-        seven: %w[P P P P P P P P],
-        six: [nil, nil, nil, nil, nil, nil, nil, nil],
-        five: [nil, nil, nil, nil, nil, nil, nil, nil],
-        four: [nil, nil, nil, nil, nil, nil, nil, nil],
-        three: [nil, nil, nil, nil, nil, nil, nil, nil],
-        two: %w[P P P P P P P P],
-        one: %w[R N B K Q B N R],
-      }
+      @board_matrix = [
+        %w[R N B Q K B N R],
+        %w[P P P P P P P P],
+        [nil, nil, nil, nil, nil, nil, nil, nil],
+        [nil, nil, nil, nil, nil, nil, nil, nil],
+        [nil, nil, nil, nil, nil, nil, nil, nil],
+        [nil, nil, nil, nil, nil, nil, nil, nil],
+        %w[P P P P P P P P],
+        %w[R N B K Q B N R],
+      ]
     end
   end
 
