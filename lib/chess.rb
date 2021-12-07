@@ -55,15 +55,17 @@ module ChessGame
       ]
     end
 
-    def occupy(space, piece)
-      row = space[0]
-      column = space[1]
-      # It is accessing an array within an array, hence
-      # [top-level array][nested array]
-      raise unless @board_matrix[row][column].nil?
+    @players =
 
-      @board_matrix[row][column] = piece
-    end
+      def occupy(space, piece)
+        row = space[0]
+        column = space[1]
+        # It is accessing an array within an array, hence
+        # [top-level array][nested array]
+        raise unless @board_matrix[row][column].nil?
+
+        @board_matrix[row][column] = piece
+      end
   end
 
   # Controls Pieces and Inputs

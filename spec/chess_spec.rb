@@ -82,7 +82,7 @@ RSpec.describe Board do
   end
   context "#initialize" do
     # the board initializes piece positions
-    context "should assign each a position on the board" do
+    context "should assign a position on the board" do
       let(:board) { Board.new }
       let(:piece) { Piece.new("bishop") }
       let(:space) { board.board_matrix[0][2] } # White King-side Bishop
@@ -100,8 +100,10 @@ RSpec.describe Board do
         # assign piece
         expect { board.occupy([0, 2], new_piece) }.to raise_error
       end
-      xit "should assign piece in according to letter in matrix"
-      xit "all pieces should be assigned a position"
+      xcontext "players and pieces passed to Board Object" do
+        xit "should have two players and their sets"
+        xit "should assign each set piece a standard position on the board"
+      end
     end
   end
   xcontext "#ask"
