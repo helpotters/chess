@@ -84,7 +84,7 @@ RSpec.describe Board do
     # the board initializes piece positions
     context "should assign each a position on the board" do
       let(:board) { Board.new }
-      let (:piece) { Piece.new("bishop") }
+      let(:piece) { Piece.new("bishop") }
       let(:space) { board.board_matrix[0][2] } # White King-side Bishop
       it "should assign piece in unoccupied space" do
         # empty space available
@@ -92,7 +92,6 @@ RSpec.describe Board do
         # assign piece
         board.occupy([0, 2], piece)
         expect(board.board_matrix[0][2]).to eq(piece)
-        p board.board_matrix
       end
       xit "should not assign piece in occupied space"
       xit "should assign piece in according to letter in matrix"
