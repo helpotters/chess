@@ -80,7 +80,7 @@ RSpec.describe Board do
       expect(matrix_var[0].length).to eq(8)
     end
   end
-  context "#initialize" do
+  describe "#initialize" do
     # the board initializes piece positions
     context "should assign a position on the board" do
       let(:board) { Board.new }
@@ -100,13 +100,13 @@ RSpec.describe Board do
         # assign piece
         expect { board.occupy([0, 2], new_piece) }.to raise_error
       end
-      xcontext "players and pieces passed to Board Object" do
-        xit "should have two players and their sets"
+      context "players and pieces passed to Board Object" do
+        it "should have two players and their sets"
         xit "should assign each set piece a standard position on the board"
       end
     end
   end
-  xcontext "#ask"
-  xcontext "#display"
-  xcontext "#update"
+  xdescribe "#ask"
+  xdescribe "#display"
+  xdescribe "#update"
 end
