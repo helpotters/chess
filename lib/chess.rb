@@ -40,6 +40,8 @@ module ChessGame
 
   # Manages the Positional Data
   class Board
+    attr_accessor :board_matrix
+
     def initialize
       @board_matrix = [
         %w[R N B Q K B N R],
@@ -51,6 +53,14 @@ module ChessGame
         %w[P P P P P P P P],
         %w[R N B K Q B N R],
       ]
+    end
+
+    def occupy(space, piece)
+      row = space[0]
+      column = space[1]
+      # It is accessing an array within an array, hence
+      # [top-level array][nested array]
+      @board_matrix[row][column] = piece
     end
   end
 
