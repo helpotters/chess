@@ -88,7 +88,7 @@ RSpec.describe Board do
       let(:space) { board.board_matrix[0][2] } # White King-side Bishop
       it "should assign piece in unoccupied space" do
         # empty space available
-        expect(space).to_not be(an_instance_of(Piece))
+        expect(space).to_not be_an_instance_of(Piece)
         # assign piece
         board.occupy([0, 2], piece)
         expect(board.board_matrix[0][2]).to eq(piece)
