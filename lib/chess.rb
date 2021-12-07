@@ -44,14 +44,14 @@ module ChessGame
 
     def initialize
       @board_matrix = [
-        %w[R N B Q K B N R],
-        %w[P P P P P P P P],
         [nil, nil, nil, nil, nil, nil, nil, nil],
         [nil, nil, nil, nil, nil, nil, nil, nil],
         [nil, nil, nil, nil, nil, nil, nil, nil],
         [nil, nil, nil, nil, nil, nil, nil, nil],
-        %w[P P P P P P P P],
-        %w[R N B K Q B N R],
+        [nil, nil, nil, nil, nil, nil, nil, nil],
+        [nil, nil, nil, nil, nil, nil, nil, nil],
+        [nil, nil, nil, nil, nil, nil, nil, nil],
+        [nil, nil, nil, nil, nil, nil, nil, nil]
       ]
     end
 
@@ -60,6 +60,8 @@ module ChessGame
       column = space[1]
       # It is accessing an array within an array, hence
       # [top-level array][nested array]
+      raise unless @board_matrix[row][column].nil?
+
       @board_matrix[row][column] = piece
     end
   end

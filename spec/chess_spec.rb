@@ -93,7 +93,13 @@ RSpec.describe Board do
         board.occupy([0, 2], piece)
         expect(board.board_matrix[0][2]).to eq(piece)
       end
-      xit "should not assign piece in occupied space"
+      it "should not assign piece in occupied space" do
+        new_piece = Piece.new("pawn")
+        board.occupy([0, 2], piece)
+        expect(space).to be_an_instance_of(Piece)
+        # assign piece
+        expect { board.occupy([0, 2], new_piece) }.to raise_error
+      end
       xit "should assign piece in according to letter in matrix"
       xit "all pieces should be assigned a position"
     end
