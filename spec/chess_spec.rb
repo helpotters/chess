@@ -17,3 +17,11 @@ RSpec.describe Board do
     end
   end
 end
+RSpec.describe Piece do
+end
+RSpec.describe Moves do
+end
+RSpec.describe Game do
+end
+RSpec.describe Player do
+end
